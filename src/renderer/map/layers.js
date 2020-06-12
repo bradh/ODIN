@@ -4,7 +4,7 @@ import Collection from 'ol/Collection'
 import { Vector as VectorSource } from 'ol/source'
 import { Vector as VectorLayer } from 'ol/layer'
 import * as ol from 'ol'
-import { Select, Modify, Translate, DragBox } from 'ol/interaction'
+import { Select, Translate, DragBox } from 'ol/interaction'
 import { click, primaryAction, platformModifierKeyOnly } from 'ol/events/condition'
 import Style from 'ol/style/Style'
 
@@ -15,6 +15,7 @@ import Feature from '../project/Feature'
 import URI from '../project/URI'
 import selection from '../selection'
 import { featureGeometry } from '../components/feature-descriptors'
+import { CustomModify } from './CustomModify'
 
 
 // --
@@ -306,7 +307,7 @@ const createSelect = () => {
 const createModify = () => {
   let initial = {} // Cloned geometries BEFORE modify.
 
-  const interaction = new Modify({
+  const interaction = new CustomModify({
     hitTolerance,
     features: selectedFeatures,
     // Allow translate while editing (with shift key pressed):
@@ -317,7 +318,7 @@ const createModify = () => {
         .map(feature => feature.get('sidc'))
         .map(sidc => featureGeometry(sidc))
 
-      return !['line-2pt'].includes(geometry)
+      return !['line-2pt', 'corridor-2pt'].includes(geometry)
     }
   })
 
